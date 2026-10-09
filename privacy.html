@@ -21,99 +21,159 @@
     p { margin-bottom: 12px; }
     ul { margin-left: 20px; margin-bottom: 12px; }
     li { margin-bottom: 6px; }
-    hr { border: none; border-top: 2px solid #EEE; margin: 40px 0; }
-    .lang-label { background: #E0F4FF; color: #1CB0F6; padding: 4px 12px; border-radius: 8px; display: inline-block; font-size: 12px; font-weight: 700; margin-bottom: 12px; }
+
+    /* 👉 SELETOR DE IDIOMA */
+    .lang-tabs {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #EEE;
+    }
+    .lang-tabs a {
+      padding: 8px 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #1CB0F6;
+      font-weight: 700;
+      font-size: 14px;
+      border: 2px solid #E0F4FF;
+      transition: all 0.2s;
+    }
+    .lang-tabs a:hover { background: #E0F4FF; }
+    .lang-tabs a.active { background: #1CB0F6; color: white; border-color: #1CB0F6; }
+
+    /* Cada idioma tem um id, e só um fica visível por vez */
+    .lang-section { display: none; }
+    .lang-section:target { display: block; }
+
+    /* Se nenhum :target, mostra o PT por padrão */
+    .lang-section.default-visible { display: block; }
+    .lang-section:target ~ .lang-section.default-visible { display: none; }
+
+    /* Fallback simples quando não tem :target */
+    body:not(:has(.lang-section:target)) .lang-section.default-visible { display: block; }
+    body:has(.lang-section:target) .lang-section { display: none; }
+    body:has(.lang-section:target) .lang-section:target { display: block; }
+
     footer { text-align: center; color: #BBB; font-size: 13px; margin-top: 40px; }
   </style>
+  <script>
+    // 👉 Quando a página abre sem âncora, decide pelo idioma do navegador.
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!window.location.hash) {
+        const lang = (navigator.language || 'pt').slice(0, 2).toLowerCase();
+        const supported = ['pt', 'en', 'es'];
+        const target = supported.includes(lang) ? lang : 'pt';
+        window.location.hash = '#' + target;
+      }
+      // Atualiza a aba ativa
+      function updateActiveTab() {
+        const hash = window.location.hash || '#pt';
+        document.querySelectorAll('.lang-tabs a').forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === hash);
+        });
+      }
+      updateActiveTab();
+      window.addEventListener('hashchange', updateActiveTab);
+    });
+  </script>
 </head>
 <body>
   <div class="container">
     <a href="index.html" class="back">← Voltar</a>
 
+    <!-- 👉 ABAS DE IDIOMA -->
+    <div class="lang-tabs">
+      <a href="#pt">🇧🇷 Português</a>
+      <a href="#en">🇺🇸 English</a>
+      <a href="#es">🇪🇸 Español</a>
+    </div>
+
     <!-- ═══════════════════ PORTUGUÊS ═══════════════════ -->
-    <span class="lang-label">🇧🇷 PORTUGUÊS</span>
-    <h1>Política de Privacidade</h1>
-    <p class="updated">Última atualização: 8 de outubro de 2026</p>
+    <div id="pt" class="lang-section default-visible">
+      <h1>Política de Privacidade</h1>
+      <p class="updated">Última atualização: 8 de outubro de 2026</p>
 
-    <h2>1. Coleta de Dados</h2>
-    <p>Coletamos apenas os dados necessários para o funcionamento do aplicativo:</p>
-    <ul>
-      <li>Nome de exibição</li>
-      <li>E-mail</li>
-      <li>XP, gemas e progresso nas lições</li>
-      <li>Idioma nativo e idioma de aprendizado</li>
-    </ul>
-    <p>Não coletamos dados de localização, contatos ou informações bancárias.</p>
+      <h2>1. Coleta de Dados</h2>
+      <p>Coletamos apenas os dados necessários para o funcionamento do aplicativo:</p>
+      <ul>
+        <li>Nome de exibição</li>
+        <li>E-mail</li>
+        <li>XP, gemas e progresso nas lições</li>
+        <li>Idioma nativo e idioma de aprendizado</li>
+      </ul>
+      <p>Não coletamos dados de localização, contatos ou informações bancárias.</p>
 
-    <h2>2. Uso dos Dados</h2>
-    <p>Os dados são utilizados para personalizar sua experiência, salvar seu progresso e habilitar recursos sociais (ranking, comunidade e chat). Nunca vendemos seus dados a terceiros.</p>
+      <h2>2. Uso dos Dados</h2>
+      <p>Os dados são utilizados para personalizar sua experiência, salvar seu progresso e habilitar recursos sociais (ranking, comunidade e chat). Nunca vendemos seus dados a terceiros.</p>
 
-    <h2>3. Armazenamento e Segurança</h2>
-    <p>Os dados são armazenados de forma segura em servidores do Google Firebase, com criptografia em trânsito e em repouso.</p>
+      <h2>3. Armazenamento e Segurança</h2>
+      <p>Os dados são armazenados de forma segura em servidores do Google Firebase, com criptografia em trânsito e em repouso.</p>
 
-    <h2>4. Seus Direitos</h2>
-    <p>Você pode editar suas informações, excluir sua conta e solicitar a remoção completa dos dados a qualquer momento através das configurações do aplicativo.</p>
+      <h2>4. Seus Direitos</h2>
+      <p>Você pode editar suas informações, excluir sua conta e solicitar a remoção completa dos dados a qualquer momento através das configurações do aplicativo.</p>
 
-    <h2>5. Contato</h2>
-    <p>Para dúvidas sobre esta política, utilize a opção "Fale Conosco" nas configurações do app.</p>
-
-    <hr>
+      <h2>5. Contato</h2>
+      <p>Para dúvidas sobre esta política, utilize a opção "Fale Conosco" nas configurações do app.</p>
+    </div>
 
     <!-- ═══════════════════ ENGLISH ═══════════════════ -->
-    <span class="lang-label">🇺🇸 ENGLISH</span>
-    <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: October 8, 2026</p>
+    <div id="en" class="lang-section">
+      <h1>Privacy Policy</h1>
+      <p class="updated">Last updated: October 8, 2026</p>
 
-    <h2>1. Data Collection</h2>
-    <p>We collect only the data necessary for the app to work:</p>
-    <ul>
-      <li>Display name</li>
-      <li>Email</li>
-      <li>XP, gems, and lesson progress</li>
-      <li>Native language and learning language</li>
-    </ul>
-    <p>We do not collect location data, contacts, or banking information.</p>
+      <h2>1. Data Collection</h2>
+      <p>We collect only the data necessary for the app to work:</p>
+      <ul>
+        <li>Display name</li>
+        <li>Email</li>
+        <li>XP, gems, and lesson progress</li>
+        <li>Native language and learning language</li>
+      </ul>
+      <p>We do not collect location data, contacts, or banking information.</p>
 
-    <h2>2. Use of Data</h2>
-    <p>Your data is used to personalize your experience, save your progress, and enable social features (ranking, community, and chat). We never sell your data to third parties.</p>
+      <h2>2. Use of Data</h2>
+      <p>Your data is used to personalize your experience, save your progress, and enable social features (ranking, community, and chat). We never sell your data to third parties.</p>
 
-    <h2>3. Storage and Security</h2>
-    <p>Data is stored securely on Google Firebase servers with encryption in transit and at rest.</p>
+      <h2>3. Storage and Security</h2>
+      <p>Data is stored securely on Google Firebase servers with encryption in transit and at rest.</p>
 
-    <h2>4. Your Rights</h2>
-    <p>You can edit your information, delete your account, and request complete data removal at any time through the app settings.</p>
+      <h2>4. Your Rights</h2>
+      <p>You can edit your information, delete your account, and request complete data removal at any time through the app settings.</p>
 
-    <h2>5. Contact</h2>
-    <p>For questions about this policy, use the "Contact Us" option in settings.</p>
-
-    <hr>
+      <h2>5. Contact</h2>
+      <p>For questions about this policy, use the "Contact Us" option in settings.</p>
+    </div>
 
     <!-- ═══════════════════ ESPAÑOL ═══════════════════ -->
-    <span class="lang-label">🇪🇸 ESPAÑOL</span>
-    <h1>Política de Privacidad</h1>
-    <p class="updated">Última actualización: 8 de octubre de 2026</p>
+    <div id="es" class="lang-section">
+      <h1>Política de Privacidad</h1>
+      <p class="updated">Última actualización: 8 de octubre de 2026</p>
 
-    <h2>1. Recopilación de Datos</h2>
-    <p>Recopilamos únicamente los datos necesarios para el funcionamiento de la aplicación:</p>
-    <ul>
-      <li>Nombre de visualización</li>
-      <li>Correo electrónico</li>
-      <li>XP, gemas y progreso en las lecciones</li>
-      <li>Idioma nativo e idioma de aprendizaje</li>
-    </ul>
-    <p>No recopilamos datos de ubicación, contactos ni información bancaria.</p>
+      <h2>1. Recopilación de Datos</h2>
+      <p>Recopilamos únicamente los datos necesarios para el funcionamiento de la aplicación:</p>
+      <ul>
+        <li>Nombre de visualización</li>
+        <li>Correo electrónico</li>
+        <li>XP, gemas y progreso en las lecciones</li>
+        <li>Idioma nativo e idioma de aprendizaje</li>
+      </ul>
+      <p>No recopilamos datos de ubicación, contactos ni información bancaria.</p>
 
-    <h2>2. Uso de los Datos</h2>
-    <p>Los datos se utilizan para personalizar tu experiencia, guardar tu progreso y habilitar funciones sociales (ranking, comunidad y chat). Nunca vendemos tus datos a terceros.</p>
+      <h2>2. Uso de los Datos</h2>
+      <p>Los datos se utilizan para personalizar tu experiencia, guardar tu progreso y habilitar funciones sociales (ranking, comunidad y chat). Nunca vendemos tus datos a terceros.</p>
 
-    <h2>3. Almacenamiento y Seguridad</h2>
-    <p>Los datos se almacenan de forma segura en servidores de Google Firebase, con cifrado en tránsito y en reposo.</p>
+      <h2>3. Almacenamiento y Seguridad</h2>
+      <p>Los datos se almacenan de forma segura en servidores de Google Firebase, con cifrado en tránsito y en reposo.</p>
 
-    <h2>4. Tus Derechos</h2>
-    <p>Puedes editar tu información, eliminar tu cuenta y solicitar la eliminación completa de los datos en cualquier momento a través de la configuración de la aplicación.</p>
+      <h2>4. Tus Derechos</h2>
+      <p>Puedes editar tu información, eliminar tu cuenta y solicitar la eliminación completa de los datos en cualquier momento a través de la configuración de la aplicación.</p>
 
-    <h2>5. Contacto</h2>
-    <p>Para dudas sobre esta política, utiliza la opción "Contáctanos" en la configuración.</p>
+      <h2>5. Contacto</h2>
+      <p>Para dudas sobre esta política, utiliza la opción "Contáctanos" en la configuración.</p>
+    </div>
 
     <footer>
       &copy; 2026 Linglota. Todos os direitos reservados.
