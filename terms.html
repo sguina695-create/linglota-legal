@@ -21,87 +21,139 @@
     p { margin-bottom: 12px; }
     ul { margin-left: 20px; margin-bottom: 12px; }
     li { margin-bottom: 6px; }
-    hr { border: none; border-top: 2px solid #EEE; margin: 40px 0; }
-    .lang-label { background: #E0F4FF; color: #1CB0F6; padding: 4px 12px; border-radius: 8px; display: inline-block; font-size: 12px; font-weight: 700; margin-bottom: 12px; }
+
+    .lang-tabs {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #EEE;
+    }
+    .lang-tabs a {
+      padding: 8px 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #1CB0F6;
+      font-weight: 700;
+      font-size: 14px;
+      border: 2px solid #E0F4FF;
+      transition: all 0.2s;
+    }
+    .lang-tabs a:hover { background: #E0F4FF; }
+    .lang-tabs a.active { background: #1CB0F6; color: white; border-color: #1CB0F6; }
+
+    .lang-section { display: none; }
+    .lang-section:target { display: block; }
+    .lang-section.default-visible { display: block; }
+    .lang-section:target ~ .lang-section.default-visible { display: none; }
+
+    body:not(:has(.lang-section:target)) .lang-section.default-visible { display: block; }
+    body:has(.lang-section:target) .lang-section { display: none; }
+    body:has(.lang-section:target) .lang-section:target { display: block; }
+
     footer { text-align: center; color: #BBB; font-size: 13px; margin-top: 40px; }
   </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!window.location.hash) {
+        const lang = (navigator.language || 'pt').slice(0, 2).toLowerCase();
+        const supported = ['pt', 'en', 'es'];
+        const target = supported.includes(lang) ? lang : 'pt';
+        window.location.hash = '#' + target;
+      }
+      function updateActiveTab() {
+        const hash = window.location.hash || '#pt';
+        document.querySelectorAll('.lang-tabs a').forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === hash);
+        });
+      }
+      updateActiveTab();
+      window.addEventListener('hashchange', updateActiveTab);
+    });
+  </script>
 </head>
 <body>
   <div class="container">
     <a href="index.html" class="back">← Voltar</a>
 
+    <div class="lang-tabs">
+      <a href="#pt">🇧🇷 Português</a>
+      <a href="#en">🇺🇸 English</a>
+      <a href="#es">🇪🇸 Español</a>
+    </div>
+
     <!-- ═══════════════════ PORTUGUÊS ═══════════════════ -->
-    <span class="lang-label">🇧🇷 PORTUGUÊS</span>
-    <h1>Termos e Condições de Uso</h1>
-    <p class="updated">Última atualização: 8 de outubro de 2026</p>
+    <div id="pt" class="lang-section default-visible">
+      <h1>Termos e Condições de Uso</h1>
+      <p class="updated">Última atualização: 8 de outubro de 2026</p>
 
-    <h2>1. Aceitação dos Termos</h2>
-    <p>Ao utilizar este aplicativo, você concorda integralmente com estes termos. Caso não concorde, não utilize o serviço.</p>
+      <h2>1. Aceitação dos Termos</h2>
+      <p>Ao utilizar este aplicativo, você concorda integralmente com estes termos. Caso não concorde, não utilize o serviço.</p>
 
-    <h2>2. Condições de Uso</h2>
-    <p>Este aplicativo tem fins educacionais e de entretenimento. Você se compromete a não publicar conteúdo ofensivo, ilegal ou que viole direitos de terceiros.</p>
+      <h2>2. Condições de Uso</h2>
+      <p>Este aplicativo tem fins educacionais e de entretenimento. Você se compromete a não publicar conteúdo ofensivo, ilegal ou que viole direitos de terceiros.</p>
 
-    <h2>3. Conta do Usuário</h2>
-    <p>Você é responsável por manter a confidencialidade da sua senha e por todas as atividades realizadas na sua conta.</p>
+      <h2>3. Conta do Usuário</h2>
+      <p>Você é responsável por manter a confidencialidade da sua senha e por todas as atividades realizadas na sua conta.</p>
 
-    <h2>4. Propriedade Intelectual</h2>
-    <p>Todo o conteúdo do aplicativo (textos, imagens, logotipos, lições) é protegido por direitos autorais e não pode ser reproduzido sem autorização.</p>
+      <h2>4. Propriedade Intelectual</h2>
+      <p>Todo o conteúdo do aplicativo (textos, imagens, logotipos, lições) é protegido por direitos autorais e não pode ser reproduzido sem autorização.</p>
 
-    <h2>5. Alterações</h2>
-    <p>Reservamo-nos o direito de modificar estes termos a qualquer momento. Alterações significativas serão comunicadas no aplicativo.</p>
+      <h2>5. Alterações</h2>
+      <p>Reservamo-nos o direito de modificar estes termos a qualquer momento. Alterações significativas serão comunicadas no aplicativo.</p>
 
-    <h2>6. Contato</h2>
-    <p>Para dúvidas sobre estes termos, utilize a opção "Fale Conosco" nas configurações.</p>
-
-    <hr>
+      <h2>6. Contato</h2>
+      <p>Para dúvidas sobre estes termos, utilize a opção "Fale Conosco" nas configurações.</p>
+    </div>
 
     <!-- ═══════════════════ ENGLISH ═══════════════════ -->
-    <span class="lang-label">🇺🇸 ENGLISH</span>
-    <h1>Terms and Conditions of Use</h1>
-    <p class="updated">Last updated: October 8, 2026</p>
+    <div id="en" class="lang-section">
+      <h1>Terms and Conditions of Use</h1>
+      <p class="updated">Last updated: October 8, 2026</p>
 
-    <h2>1. Acceptance</h2>
-    <p>By using this app, you fully agree to these terms. If you do not agree, do not use the service.</p>
+      <h2>1. Acceptance</h2>
+      <p>By using this app, you fully agree to these terms. If you do not agree, do not use the service.</p>
 
-    <h2>2. Conditions of Use</h2>
-    <p>This app is for educational and entertainment purposes. You agree not to publish offensive, illegal content or content that violates third-party rights.</p>
+      <h2>2. Conditions of Use</h2>
+      <p>This app is for educational and entertainment purposes. You agree not to publish offensive, illegal content or content that violates third-party rights.</p>
 
-    <h2>3. User Account</h2>
-    <p>You are responsible for keeping your password confidential and for all activities carried out under your account.</p>
+      <h2>3. User Account</h2>
+      <p>You are responsible for keeping your password confidential and for all activities carried out under your account.</p>
 
-    <h2>4. Intellectual Property</h2>
-    <p>All app content (texts, images, logos, lessons) is protected by copyright and may not be reproduced without authorization.</p>
+      <h2>4. Intellectual Property</h2>
+      <p>All app content (texts, images, logos, lessons) is protected by copyright and may not be reproduced without authorization.</p>
 
-    <h2>5. Changes</h2>
-    <p>We reserve the right to modify these terms at any time. Significant changes will be announced in the app.</p>
+      <h2>5. Changes</h2>
+      <p>We reserve the right to modify these terms at any time. Significant changes will be announced in the app.</p>
 
-    <h2>6. Contact</h2>
-    <p>For questions about these terms, use the "Contact Us" option in settings.</p>
-
-    <hr>
+      <h2>6. Contact</h2>
+      <p>For questions about these terms, use the "Contact Us" option in settings.</p>
+    </div>
 
     <!-- ═══════════════════ ESPAÑOL ═══════════════════ -->
-    <span class="lang-label">🇪🇸 ESPAÑOL</span>
-    <h1>Términos y Condiciones de Uso</h1>
-    <p class="updated">Última actualización: 8 de octubre de 2026</p>
+    <div id="es" class="lang-section">
+      <h1>Términos y Condiciones de Uso</h1>
+      <p class="updated">Última actualización: 8 de octubre de 2026</p>
 
-    <h2>1. Aceptación</h2>
-    <p>Al utilizar esta aplicación, aceptas íntegramente estos términos. Si no estás de acuerdo, no uses el servicio.</p>
+      <h2>1. Aceptación</h2>
+      <p>Al utilizar esta aplicación, aceptas íntegramente estos términos. Si no estás de acuerdo, no uses el servicio.</p>
 
-    <h2>2. Condiciones de Uso</h2>
-    <p>Esta aplicación tiene fines educativos y de entretenimiento. Te comprometes a no publicar contenido ofensivo, ilegal o que viole derechos de terceros.</p>
+      <h2>2. Condiciones de Uso</h2>
+      <p>Esta aplicación tiene fines educativos y de entretenimiento. Te comprometes a no publicar contenido ofensivo, ilegal o que viole derechos de terceros.</p>
 
-    <h2>3. Cuenta de Usuario</h2>
-    <p>Eres responsable de mantener la confidencialidad de tu contraseña y de todas las actividades realizadas en tu cuenta.</p>
+      <h2>3. Cuenta de Usuario</h2>
+      <p>Eres responsable de mantener la confidencialidad de tu contraseña y de todas las actividades realizadas en tu cuenta.</p>
 
-    <h2>4. Propiedad Intelectual</h2>
-    <p>Todo el contenido de la aplicación (textos, imágenes, logotipos, lecciones) está protegido por derechos de autor y no puede reproducirse sin autorización.</p>
+      <h2>4. Propiedad Intelectual</h2>
+      <p>Todo el contenido de la aplicación (textos, imágenes, logotipos, lecciones) está protegido por derechos de autor y no puede reproducirse sin autorización.</p>
 
-    <h2>5. Cambios</h2>
-    <p>Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios significativos se comunicarán en la aplicación.</p>
+      <h2>5. Cambios</h2>
+      <p>Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios significativos se comunicarán en la aplicación.</p>
 
-    <h2>6. Contacto</h2>
-    <p>Para dudas sobre estos términos, utiliza la opción "Contáctanos" en la configuración.</p>
+      <h2>6. Contacto</h2>
+      <p>Para dudas sobre estos términos, utiliza la opción "Contáctanos" en la configuración.</p>
+    </div>
 
     <footer>
       &copy; 2026 Linglota. Todos os direitos reservados.
